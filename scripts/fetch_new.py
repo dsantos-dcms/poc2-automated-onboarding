@@ -52,4 +52,4 @@ for region in regions:
 
 # Print or use the results as needed
 print(json_str)
-os.environ['TO_ONBOARD'] = json_str
+os.environ['TO_ONBOARD'] = region_results
