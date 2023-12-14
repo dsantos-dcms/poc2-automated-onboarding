@@ -33,7 +33,7 @@ jobs:
       
       - name: Setting up EFS 
         run: |
-          python scripts/main.py
+          python3 scripts/main.py
   
   # Fetch-US:
   #   runs-on: self-hosted
