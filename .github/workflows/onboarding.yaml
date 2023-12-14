@@ -30,7 +30,7 @@ jobs:
           # Store the output of the Python script in a local variable
           CA_CENTRAL_1=$(python3 scripts/fetch_new.py) >> $GITHUB_ENV
           echo "$CA_CENTRAL_1"
-          
+          python3 scripts/main.py
       
   # Fetch-US:
   #   runs-on: self-hosted
