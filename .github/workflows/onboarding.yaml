@@ -25,16 +25,11 @@ jobs:
         run: |
           cd /mnt/
           ls -la
-      
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-
+  
       - name: Fetching new customers/environments for ca-central-1 
         run: |
           # Store the output of the Python script in a local variable
-          CA_CENTRAL_1=$(python scripts/fetch_new.py)
+          CA_CENTRAL_1=$(python3 scripts/fetch_new.py)
       
       - name: Setting up EFS 
         run: |
