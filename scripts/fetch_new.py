@@ -63,3 +63,6 @@ base64_str = base64.b64encode(json_bytes).decode('utf-8')
 print(base64_str)
 
 os.environ['TO_ONBOARD'] = base64_str
+
+test = [os.environ.get("TO_ONBOARD")]
+print (test)
