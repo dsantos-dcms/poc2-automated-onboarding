@@ -52,3 +52,4 @@ for region in regions:
 
 # Print or use the results as needed
 print(region_results)
+os.environ['TO_ONBOARD'] = region_results
