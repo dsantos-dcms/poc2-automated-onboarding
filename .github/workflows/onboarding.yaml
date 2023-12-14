@@ -23,7 +23,6 @@ jobs:
 
       - name: Test dir access
         run: |
-          cd /mnt/
           ls -la
   
       - name: Fetching new customers/environments for ca-central-1 
