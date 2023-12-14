@@ -26,24 +26,29 @@ jobs:
           cd /mnt/
           ls -la
       
-      - name: Test dir access 
+      - name: Fetching new customers/environments for ca-central-1 
         run: |
-          python3 ./fetch_new.py
-  
-  Fetch-US:
-    runs-on: self-hosted
-    env:
-      AWS_REGION: 'us-east-1'
-    
-    steps:
-    #   - name: Git clone the repository
-    #     uses: actions/checkout@v3
-
-      - name: Test dir access
-        run: |
-          cd /mnt/
-          ls -la
+          # Store the output of the Python script in a local variable
+          CA_CENTRAL_1=$(python scripts/fetch_new.py)
       
-      - name: Test dir access 
+      - name: Setting up EFS 
         run: |
-          python3 ./fetch_new.py
+          python scripts/main.py
+  
+  # Fetch-US:
+  #   runs-on: self-hosted
+  #   env:
+  #     AWS_REGION: 'us-east-1'
+    
+  #   steps:
+  #   #   - name: Git clone the repository
+  #   #     uses: actions/checkout@v3
+
+  #     - name: Test dir access
+  #       run: |
+  #         cd /mnt/
+  #         ls -la
+      
+  #     - name: Test dir access 
+  #       run: |
+  #         python3 ./fetch_new.py

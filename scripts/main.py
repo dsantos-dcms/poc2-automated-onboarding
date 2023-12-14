@@ -3,6 +3,7 @@ import time
 import boto3
 from botocore.exceptions import ClientError
 import json
+import os
 
 class AwsEfsManager:
     def __init__(self, region):
@@ -170,13 +171,19 @@ class AwsEfsManager:
 ################################################################################################################# 
 
 logging.basicConfig(level=logging.INFO)
-region_client_env_data = {
-    'ca-central-1': '{"caliber": ["prod","dev"], "brambles": ["prod"], "new-client": ["prod"]}', 
-    'us-east-1': '{"calvin": ["prod"]}'
-}
+
+
+
+# region_client_env_data = {
+#     'ca-central-1': '{"caliber": ["prod","dev"], "brambles": ["prod"], "new-client": ["prod"]}', 
+#     'us-east-1': '{"calvin": ["prod"]}'
+# }
+
+region = os.environ.get("AWS_REGION")
+region_client_env_data = os.environ.get("CA_CENTRAL_1")
 
 # Example usage of AwsEfsManager
-efs_manager = AwsEfsManager('ca-central-1')  # Initialize with a default region
+efs_manager = AwsEfsManager(region)  # Initialize with a default region
 
 for region, client_envs_json in region_client_env_data.items():
     # Parse the JSON string to get the client-environment dictionary
