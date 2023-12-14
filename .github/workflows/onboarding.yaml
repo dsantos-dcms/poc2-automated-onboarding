@@ -27,23 +27,6 @@ jobs:
   
       - name: Fetching new customers/environments for ca-central-1 
         run: |
-          # Store the output of the Python script in a local variable
-          CA_CENTRAL_1_ENCODED=$(python .github/ca-central-1.py)
-
-          # Decode the Base64 encoded content
-          CA_CENTRAL_1_DECODED=$(echo "$CA_CENTRAL_1_ENCODED" | base64 --decode)
-
-          # Set the encoded and decoded values as environment variables for subsequent steps
-          echo "CA_CENTRAL_1_ENCODED=$CA_CENTRAL_1_ENCODED" >> $GITHUB_ENV
-          echo "CA_CENTRAL_1_DECODED=$CA_CENTRAL_1_DECODED" >> $GITHUB_ENV
-
-          # Conditional check for the decoded content
-          if [ "$CA_CENTRAL_1_DECODED" = "{}" ]; then
-            echo "No new customers/environments for ca-central-1."
-          else
-            echo "New customers/environments for ca-central-1:"
-            echo "$CA_CENTRAL_1_DECODED"
-          fi
           python3 scripts/fetch_new.py
           python3 scripts/main.py
       
