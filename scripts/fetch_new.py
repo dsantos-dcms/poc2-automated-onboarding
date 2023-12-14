@@ -51,5 +51,5 @@ for region in regions:
     region_results[region] = json_str
 
 # Print or use the results as needed
-print(region_results)
-os.environ['TO_ONBOARD'] = region_results
+print(json_str)
+os.environ['TO_ONBOARD'] = json_str
