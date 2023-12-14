@@ -15,13 +15,11 @@ permissions:
   contents: read  # This is required for actions/checkout
 
 jobs:
-  Onboarding-pre-checks:
+  Fetch-Canada:
     runs-on: self-hosted
+    
 
     steps:
-      - id: install-aws-cli
-        uses: unfor19/install-aws-cli-action@v1
-
       - name: Git clone the repository
         uses: actions/checkout@v3
 
@@ -31,5 +29,7 @@ jobs:
           ls -la
       
       - name: Test dir access
+        env:
+          AWS_REGION: "ca-central-1"
         run: |
           python3 ./fetch_new.py
