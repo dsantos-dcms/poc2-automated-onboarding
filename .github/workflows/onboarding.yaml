@@ -28,9 +28,14 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.14' 
+          python-version: '3.10.4' 
 
       - name: Install dependencies
         run: |
           pip install pyyaml
           pip install yamllint
+
+      - name: Test dir access
+        run: |
+          cd /mnt/
+          ls -la
