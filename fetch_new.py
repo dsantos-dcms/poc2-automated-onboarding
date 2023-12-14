@@ -31,7 +31,7 @@ def find_new_customers_or_environments(customers_data, onboarded_file):
     return new_customers_or_environments
 
 # Define regions | MOVE THIS TO GIT ENV VARIABLES
-regions = os.environ.get("AWS_REGION")
+regions = [os.environ.get("AWS_REGION")]
 
 # Initialize the dictionary to store results
 region_results = {}
