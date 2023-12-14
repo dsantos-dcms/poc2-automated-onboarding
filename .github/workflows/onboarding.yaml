@@ -27,7 +27,7 @@ jobs:
   
       - name: Fetching new customers/environments for ca-central-1 
         run: |
-          echo "CA_CENTRAL_1=$(python3 scripts/fetch_new.py)" >> $GITHUB_ENV
+          python3 scripts/fetch_new.py
           python3 scripts/main.py
       
   # Fetch-US:
