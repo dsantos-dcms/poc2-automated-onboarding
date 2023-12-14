@@ -38,8 +38,8 @@ region_results = {}
 
 # Loop over each region
 for region in regions:
-    directory = f"../customers/{region}/"
-    onboarded_file = f"../config/{region}.yaml"
+    directory = f'../customers/{region}/'
+    onboarded_file = f'../config/{region}.yaml'
 
     # Use the existing logic for each region
     obtained_data = read_yaml_files(directory)
