@@ -64,5 +64,5 @@ print(base64_str)
 
 os.environ['TO_ONBOARD'] = base64_str
 
-test = [os.environ.get("TO_ONBOARD")]
+test = os.environ.get("TO_ONBOARD")
 print (test)
