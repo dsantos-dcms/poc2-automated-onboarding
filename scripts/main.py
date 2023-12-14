@@ -179,8 +179,9 @@ import os
 # #     'us-east-1': '{"calvin": ["prod"]}'
 # # }
 
-region = os.environ.get("AWS_REGION")
-region_client_env_data = os.environ.get("CA_CENTRAL_1")
+print(os.environ)
+# region = os.environ.get("AWS_REGION")
+# region_client_env_data = os.environ.get("CA_CENTRAL_1")
 
 # # Example usage of AwsEfsManager
 # efs_manager = AwsEfsManager(region)  # Initialize with a default region
@@ -199,4 +200,4 @@ region_client_env_data = os.environ.get("CA_CENTRAL_1")
 #                 access_point_id = efs_manager.create_access_point(file_system_id, client, env)
 #                 print(f"Access Point ID: {access_point_id}")
 
-print(region_client_env_data)
+# print(region_client_env_data)
