@@ -28,12 +28,10 @@ jobs:
       - name: Fetching new customers/environments for ca-central-1 
         run: |
           # Store the output of the Python script in a local variable
-          CA_CENTRAL_1=$(python3 scripts/fetch_new.py)
+          CA_CENTRAL_1=$(python3 scripts/fetch_new.py) >> $GITHUB_ENV
+          echo "$CA_CENTRAL_1"
+          
       
-      - name: Setting up EFS 
-        run: |
-          python3 scripts/main.py
-  
   # Fetch-US:
   #   runs-on: self-hosted
   #   env:

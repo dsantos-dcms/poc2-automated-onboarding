@@ -6,4 +6,5 @@
 1 - Install python and pip
 2 - Install AWS CLI
 3 - Install Pyyml
+4 - Install boto3
 
