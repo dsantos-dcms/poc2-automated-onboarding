@@ -1,6 +1,7 @@
 import yaml
 import os
 import json
+import base64
 
 def read_yaml_files(directory):
     data = []
@@ -52,4 +53,13 @@ for region in regions:
 
 # Print or use the results as needed
 print(json_str)
-os.environ['TO_ONBOARD'] = region_results
+
+# Encode the JSON string to bytes
+json_bytes = json_str.encode('utf-8')
+
+# Base64 encode the bytes
+base64_str = base64.b64encode(json_bytes).decode('utf-8')
+
+print(base64_str)
+
+os.environ['TO_ONBOARD'] = base64_str
