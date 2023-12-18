@@ -28,7 +28,7 @@ jobs:
       - name: Fetching new customers/environments for ca-central-1 
         run: |
           CA_CENTRAL_1_ENCODED=$(python3 scripts/fetch_new.py)
-          echo "CA_CENTRAL_1_ENCODED=$CA_CENTRAL_1_ENCODED" >> $GITHUB_ENV
+          echo "CA_CENTRAL_1_ENCODED=$CA_CENTRAL_1_ENCODED" | decode >> $GITHUB_ENV
           python3 scripts/main.py
 
       - name: Use env variable in a subsequent step
