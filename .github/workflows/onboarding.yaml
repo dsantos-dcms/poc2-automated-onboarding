@@ -27,12 +27,11 @@ jobs:
   
       - name: Fetching new customers/environments for ca-central-1 
         run: |
-          CA_CENTRAL_1_ENCODED=$(python3 scripts/fetch_new.py)
-          echo "CA_CENTRAL_1_ENCODED=$CA_CENTRAL_1_ENCODED" >> $GITHUB_ENV
+          CA_CENTRAL_1=$(python3 scripts/fetch_new.py)
+          echo "CA_CENTRAL_1=$CA_CENTRAL_1" >> $GITHUB_ENV
+          echo "Customers and envrionments to be onboarded: $CA_CENTRAL_1"
       
       - name: Use env variable in a subsequent step
         run: |
-          echo "The value of MY_VAR is $CA_CENTRAL_1_ENCODED"
           python3 scripts/main.py
-
           
