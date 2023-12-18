@@ -7,4 +7,9 @@
 2 - Install AWS CLI
 3 - Install Pyyml
 4 - Install boto3
+5 - Install Git
+
+- Make sure the gitaction runner is running as a service so it is always available
+  -  sudo ./svc.sh install
+  -  sudo ./svc.sh start
 

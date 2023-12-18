@@ -20,6 +20,8 @@ jobs:
     steps:
       - name: Git clone the repository
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ONBOARDING_TOKEN }}
 
       - name: Test dir access
         run: |
