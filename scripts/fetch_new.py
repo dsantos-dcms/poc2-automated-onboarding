@@ -60,4 +60,4 @@ json_bytes = json_str.encode('utf-8')
 # Base64 encode the bytes
 base64_str = base64.b64encode(json_bytes).decode('utf-8')
 
-print(base64_str)
+print(f"base64_str")
