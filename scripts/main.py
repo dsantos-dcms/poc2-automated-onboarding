@@ -181,7 +181,7 @@ logging.basicConfig(level=logging.INFO)
 
 #print(os.environ)
 region = os.environ.get("AWS_REGION")
-region_client_env_data = json.loads(os.environ.get("CA_CENTRAL_1_ENCODED"))
+region_client_env_data = os.environ.get("CA_CENTRAL_1_ENCODED")
 
 efs_manager = AwsEfsManager(region)  # Initialize with a default region
 
