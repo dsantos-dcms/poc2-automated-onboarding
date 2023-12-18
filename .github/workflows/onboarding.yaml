@@ -38,3 +38,7 @@ jobs:
       - name: Updating Onboarding Config file
         run: |
           python3 scripts/update_config.py
+          git config --global user.name 'Automated onboarding'
+          git config --global user.email 'automatedonboarding@dotcms.com'
+          git add -A
+          git diff --staged --quiet || (git commit -m "Auto-update files" && git push)
