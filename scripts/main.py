@@ -183,19 +183,25 @@ logging.basicConfig(level=logging.INFO)
 region = os.environ.get("AWS_REGION")
 region_client_env_data = os.environ.get("CA_CENTRAL_1_ENCODED")
 
-efs_manager = AwsEfsManager(region)  # Initialize with a default region
+# Initialize the AWS EFS Manager
+efs_manager = AwsEfsManager(region)
 
-for region, client_envs_json in region_client_env_data.items():
-    # Parse the JSON string to get the client-environment dictionary
-    client_envs = json.loads(client_envs_json)
+# Check if region_client_env_data is not None
+if region_client_env_data:
+    # Parse the JSON string into a Python dictionary
+    try:
+        client_envs = json.loads(region_client_env_data)
 
-    for client, envs in client_envs.items():
-        for env in envs:
-            # Create EFS file system for each client and environment
-            file_system_id = efs_manager.create_efs(client)
+        for client, envs in client_envs.items():
+            for env in envs:
+                # Create EFS file system for each client and environment
+                file_system_id = efs_manager.create_efs(client)
 
-            if file_system_id:
-                # Create access point for the EFS
-                access_point_id = efs_manager.create_access_point(file_system_id, client, env)
-                print(f"Access Point ID: {access_point_id}")
-
+                if file_system_id:
+                    # Create access point for the EFS
+                    access_point_id = efs_manager.create_access_point(file_system_id, client, env)
+                    print(f"Access Point ID: {access_point_id}")
+    except json.JSONDecodeError as e:
+        print(f"Error parsing JSON from MY_VAR: {e}")
+else:
+    print("Environment variable MY_VAR is not set or is empty.")
