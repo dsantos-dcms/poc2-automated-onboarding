@@ -31,7 +31,10 @@ jobs:
           echo "CA_CENTRAL_1=$CA_CENTRAL_1" >> $GITHUB_ENV
           echo "Customers and envrionments to be onboarded: $CA_CENTRAL_1"
       
-      - name: Use env variable in a subsequent step
+      - name: Onboarding Process
         run: |
           python3 scripts/main.py
-          
+    
+      - name: Updating Onboarding Config file
+        run: |
+          python3 scripts/update_config.py
