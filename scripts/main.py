@@ -172,14 +172,11 @@ class AwsEfsManager:
 
 logging.basicConfig(level=logging.INFO)
 
+# ENABLE TO TEST LOCALLY
+# region_client_env_data = '{"caliber": ["prod","dev"], "brambles": ["prod"], "new-client": ["prod"]}',   '{"calvin": ["prod"]}'}'
+# region = 'ca-central-1'
 
-
-# region_client_env_data = {
-#     'ca-central-1': '{"caliber": ["prod","dev"], "brambles": ["prod"], "new-client": ["prod"]}', 
-#     'us-east-1': '{"calvin": ["prod"]}'
-# }
-
-#print(os.environ)
+# print(os.environ)
 region = os.environ.get("AWS_REGION")
 region_client_env_data = os.environ.get("CA_CENTRAL_1")
 
