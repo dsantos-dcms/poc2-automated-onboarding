@@ -27,23 +27,12 @@ jobs:
   
       - name: Fetching new customers/environments for ca-central-1 
         run: |
-          python3 scripts/fetch_new.py
+          CA_CENTRAL_1_ENCODED=$(python .github/fetch_new.py)
+          echo "CA_CENTRAL_1_ENCODED=$CA_CENTRAL_1_ENCODED" >> $GITHUB_ENV
           python3 scripts/main.py
-      
-  # Fetch-US:
-  #   runs-on: self-hosted
-  #   env:
-  #     AWS_REGION: 'us-east-1'
-    
-  #   steps:
-  #   #   - name: Git clone the repository
-  #   #     uses: actions/checkout@v3
 
-  #     - name: Test dir access
-  #       run: |
-  #         cd /mnt/
-  #         ls -la
-      
-  #     - name: Test dir access 
-  #       run: |
-  #         python3 ./fetch_new.py
+      - name: Use env variable in a subsequent step
+        run: |
+          echo "The value of MY_VAR is $CA_CENTRAL_1_ENCODED"
+
+          

@@ -1,6 +1,9 @@
 # Important Notes
 
 - Subnets provided to mount target must be in different AZ, otherwise it will fail
+- Make sure the gitaction runner is running as a service so it is always available
+  -  sudo ./svc.sh install
+  -  sudo ./svc.sh start
 
 
 # Completed

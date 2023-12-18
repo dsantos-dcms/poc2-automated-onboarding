@@ -179,8 +179,9 @@ import os
 # #     'us-east-1': '{"calvin": ["prod"]}'
 # # }
 
-print(os.environ)
+#print(os.environ)
 region = os.environ.get("AWS_REGION")
+
 # region_client_env_data = os.environ.get("CA_CENTRAL_1")
 
 # # Example usage of AwsEfsManager
