@@ -54,10 +54,10 @@ for region in regions:
 # Print or use the results as needed
 print(json_str)
 
-# Encode the JSON string to bytes
-json_bytes = json_str.encode('utf-8')
+# # Encode the JSON string to bytes
+# json_bytes = json_str.encode('utf-8')
 
-# Base64 encode the bytes
-base64_str = base64.b64encode(json_bytes).decode('utf-8')
+# # Base64 encode the bytes
+# base64_str = base64.b64encode(json_bytes).decode('utf-8')
 
-print(f"base64_str")
+# print(f"base64_str")
