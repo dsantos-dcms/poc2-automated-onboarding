@@ -39,6 +39,5 @@ def update_yaml_with_clients(region, client_env_data_json):
 
 # # GITHUB ACTIONS VARIABLES
 region = os.environ.get("AWS_REGION")
-region_client_env_data = os.environ.get("CA_CENTRAL_1")
-
+region_client_env_data = os.environ.get("TO_ONBOARD")
 update_yaml_with_clients(region, region_client_env_data)

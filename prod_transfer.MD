@@ -16,3 +16,4 @@
 ## GITHUB ACTIONS SETUP
 - create PAT Token with right permissions to push changes back to repo
 - UPDATE THE PATH TO IGNORE on gitworkflows
+- Add Labels for each runner in the repository so you can specify them in the jobs accordingly
