@@ -5,7 +5,7 @@ on:
     branches:
     - main
     paths-ignore:
-    - 'dotcms-onboarding-cicd/config/**'
+    - 'poc2-automated-onboarding/config/**'
 
 permissions:
   id-token: write  # This is required for requesting the JWT
@@ -13,7 +13,7 @@ permissions:
 
 jobs:
   Fetch-Canada:
-    runs-on: self-hosted
+    runs-on: [self-hosted,automated-onboarding-ec2]
     env:
       AWS_REGION: 'ca-central-1'
     
@@ -29,9 +29,9 @@ jobs:
   
       - name: Fetching new customers/environments for ca-central-1 
         run: |
-          CA_CENTRAL_1=$(python3 scripts/fetch_new.py)
-          echo "CA_CENTRAL_1=$CA_CENTRAL_1" >> $GITHUB_ENV
-          echo "Customers and envrionments to be onboarded: $CA_CENTRAL_1"
+          TO_ONBOARD=$(python3 scripts/fetch_new.py)
+          echo "TO_ONBOARD=$TO_ONBOARD" >> $GITHUB_ENV
+          echo "Customers and envrionments to be onboarded: $TO_ONBOARD"
       
       - name: Onboarding Process
         run: |
@@ -43,4 +43,36 @@ jobs:
           git config --global user.name 'Automated onboarding'
           git config --global user.email 'automatedonboarding@dotcms.com'
           git add -A
-          git diff --staged --quiet || (git commit -m "Auto-update files" && git push)
+          git diff --staged --quiet || (git commit -m "Update config onboarding ca-central-1" && git push)
+  Fetch-US:
+    runs-on: [self-hosted,us-east-1]
+    env:
+      AWS_REGION: 'us-east-1'
+    
+    steps:
+      - name: Git clone the repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ONBOARDING }}
+
+      - name: Test dir access
+        run: |
+          ls -la
+  
+      - name: Fetching new customers/environments for us-east-1
+        run: |
+          TO_ONBOARD=$(python3 scripts/fetch_new.py)
+          echo "TO_ONBOARD=$TO_ONBOARD" >> $GITHUB_ENV
+          echo "Customers and envrionments to be onboarded: $TO_ONBOARD"
+      
+      - name: Onboarding Process
+        run: |
+          python3 scripts/main.py
+    
+      - name: Updating Onboarding Config file
+        run: |
+          python3 scripts/update_config.py
+          git config --global user.name 'Automated onboarding'
+          git config --global user.email 'automatedonboarding@dotcms.com'
+          git add -A
+          git diff --staged --quiet || (git commit -m "Update config onboarding us-east-1" && git push)

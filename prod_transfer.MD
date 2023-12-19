@@ -13,3 +13,6 @@
   -  sudo ./svc.sh install
   -  sudo ./svc.sh start
 
+## GITHUB ACTIONS SETUP
+- create PAT Token with right permissions to push changes back to repo
+- UPDATE THE PATH TO IGNORE on gitworkflows

@@ -11,7 +11,7 @@ class AwsEfsManager:
         self.region = region
         self.regions = {
             'ca-central-1': {"subnet_ids": ["subnet-06f45035183d72a63"], "security_groups":["sg-084bfe2d8728356fe"]}, # AZ MUST BE DIFFERENT FOR EFS MOUNT TARGET
-            'us-east-1': {"subnet_ids": ["id_a","id_b"], "security_groups":["a","b"]},
+            'us-east-1': {"subnet_ids": ["subnet-088928fa05998da0a"], "security_groups":["sg-04e82704b331280ed"]},
             'us-east-2': {"subnet_ids": ["id_a","id_b"], "security_groups":["a","b"]},
             'ap-south-2': {"subnet_ids": ["id_a","id_b"], "security_groups":["a","b"]}
         }
@@ -178,7 +178,7 @@ logging.basicConfig(level=logging.INFO)
 
 # print(os.environ)
 region = os.environ.get("AWS_REGION")
-region_client_env_data = os.environ.get("CA_CENTRAL_1")
+region_client_env_data = os.environ.get("TO_ONBOARD")
 
 # Initialize the AWS EFS Manager
 efs_manager = AwsEfsManager(region)

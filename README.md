@@ -14,5 +14,3 @@
 
 # Next  
 - Create an EC2 MGMT in US Region
-- Create a script to re-add onboarded clients to file
-
