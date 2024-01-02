@@ -4,6 +4,7 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 import os
+import subprocess
 
 class AwsEfsManager:
     def __init__(self, region):
@@ -166,14 +167,33 @@ class AwsEfsManager:
         except ClientError as e:
             self.log_error(e)
             return None
-    
+        
+    def mount_efs(self, file_system_id, client_name):
+        base_path = '/mnt'
+        client_path = os.path.join(base_path, client_name)
 
+        # Check if the mount point already has a mounted file system
+        if not os.path.ismount(client_path):
+            # Create client directory if it doesn't exist
+            if not os.path.exists(client_path):
+                os.makedirs(client_path)
+
+            # Mount command
+            mount_command = f"sudo mount -t efs -o tls {file_system_id}:/ {client_path}"
+            try:
+                # Execute mount command
+                subprocess.run(mount_command, check=True, shell=True)
+                logging.info(f"EFS {file_system_id} mounted successfully at {client_path}")
+            except subprocess.CalledProcessError as e:
+                self.log_error(f"Error occurred while mounting EFS: {e}")
+        else:
+            logging.info(f"EFS is already mounted at {client_path}")
 ################################################################################################################# 
 
 logging.basicConfig(level=logging.INFO)
 
 # ENABLE TO TEST LOCALLY
-# region_client_env_data = '{"caliber": ["prod","dev"], "brambles": ["prod"], "new-client": ["prod"]}',   '{"calvin": ["prod"]}'}'
+# region_client_env_data = '{"bra": ["prod"]}'
 # region = 'ca-central-1'
 
 # print(os.environ)
@@ -198,6 +218,8 @@ if region_client_env_data:
                     # Create access point for the EFS
                     access_point_id = efs_manager.create_access_point(file_system_id, client, env)
                     print(f"Access Point ID: {access_point_id}")
+                efs_manager.mount_efs(file_system_id, client)
+                
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON from MY_VAR: {e}")
 else:
