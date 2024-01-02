@@ -174,12 +174,8 @@ class AwsEfsManager:
 
         # Check if the mount point already has a mounted file system
         if not os.path.ismount(client_path):
-            # Create client directory if it doesn't exist
-            if not os.path.exists(client_path):
-                os.makedirs(client_path)
-
             # Mount command
-            mount_command = f"sudo mount -t efs -o tls {file_system_id}:/ {client_path}"
+            mount_command = f"sudo mkdir {client_path} && sudo mount -t efs -o tls {file_system_id}:/ {client_path}"
             try:
                 # Execute mount command
                 subprocess.run(mount_command, check=True, shell=True)
