@@ -11,7 +11,7 @@ class AwsEfsManager:
         self.efs_client = boto3.client('efs', region_name=region)
         self.region = region
         self.regions = {
-            'ca-central-1': {"subnet_ids": ["subnet-06f45035183d72a63"], "security_groups":["sg-084bfe2d8728356fe"]}, # AZ MUST BE DIFFERENT FOR EFS MOUNT TARGET
+            'ca-central-1': {"subnet_ids": ["subnet-06f45035183d72a63"], "security_groups":["sg-084bfe2d8728356fe"], "glowroot": "http://glowrootcentral.dotcmscloud.com:8181"}, # AZ MUST BE DIFFERENT FOR EFS MOUNT TARGET
             'us-east-1': {"subnet_ids": ["subnet-088928fa05998da0a"], "security_groups":["sg-04e82704b331280ed"]},
             'us-east-2': {"subnet_ids": ["id_a","id_b"], "security_groups":["a","b"]},
             'ap-south-2': {"subnet_ids": ["id_a","id_b"], "security_groups":["a","b"]}
@@ -184,7 +184,36 @@ class AwsEfsManager:
                 self.log_error(f"Error occurred while mounting EFS: {e}")
         else:
             logging.info(f"EFS is already mounted at {client_path}")
-################################################################################################################# 
+            
+    def efs_folder_setup(self, client_name, env):
+        region_config = self.regions.get(self.region)
+        base_path = '/mnt'
+        client_path = os.path.join(base_path, client_name)
+        env_path = os.path.join(client_path, env)
+        assets_path = os.path.join(env_path, 'assets')
+        glowroot_path = os.path.join(env_path, 'glowroot')
+        glowroot_properties_path = os.path.join(glowroot_path, 'glowroot.properties')
+        
+        create_assets_command = f"sudo mkdir {assets_path}"
+        set_glowroot_command = f"sudo cp -r /mnt/glowroot {env_path}"
+       
+        # Create env and assets directories if they don't exist
+        if not os.path.exists(assets_path):
+            try:
+                subprocess.run(create_assets_command, check=True, shell=True)
+                subprocess.run(set_glowroot_command, check=True, shell=True)
+                logging.info(f"'assets' directory created successfully at {assets_path}")
+            except OSError as e:
+                self.log_error(f"Error occurred while creating 'assets' directory: {e}")
+        else:
+            logging.info(f"'assets' directory already exists at {assets_path}")
+    
+        with open(glowroot_properties_path, 'w') as file:
+                    file.write(f"agent.id=k8s.{client_name}::{env}\n")
+                    file.write(f"collector.address={region_config['glowroot']}\n")
+                logging.info(f"'glowroot.properties' updated successfully in {glowroot_properties_path}")
+    
+################## 
 
 logging.basicConfig(level=logging.INFO)
 
