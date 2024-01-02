@@ -203,15 +203,16 @@ class AwsEfsManager:
                 subprocess.run(create_assets_command, check=True, shell=True)
                 subprocess.run(set_glowroot_command, check=True, shell=True)
                 logging.info(f"'assets' directory created successfully at {assets_path}")
+                
+                with open(glowroot_properties_path, 'w') as file:
+                    file.write(f"agent.id=k8s.{client_name}::{env}\n")
+                    file.write(f"collector.address={region_config['glowroot']}\n")
+                logging.info(f"'glowroot.properties' updated successfully in {glowroot_properties_path}")
+                
             except OSError as e:
                 self.log_error(f"Error occurred while creating 'assets' directory: {e}")
         else:
             logging.info(f"'assets' directory already exists at {assets_path}")
-    
-        with open(glowroot_properties_path, 'w') as file:
-                    file.write(f"agent.id=k8s.{client_name}::{env}\n")
-                    file.write(f"collector.address={region_config['glowroot']}\n")
-                logging.info(f"'glowroot.properties' updated successfully in {glowroot_properties_path}")
     
 ################## 
 
