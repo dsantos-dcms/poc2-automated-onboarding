@@ -4,6 +4,7 @@ bra:
 bro:
 - prod
 - dev
+- qa
 caliber:
 - prod
 dot:
