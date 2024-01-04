@@ -245,7 +245,7 @@ if region_client_env_data:
                     access_point_id = efs_manager.create_access_point(file_system_id, client, env)
                     print(f"Access Point ID: {access_point_id}")
                 efs_manager.mount_efs(file_system_id, client)
-                efs_manager.efs_folder_setup(file_system_id,client, env)
+                efs_manager.efs_folder_setup(client, env)
                 
     except json.JSONDecodeError as e:
         print(f"Error parsing JSON from MY_VAR: {e}")
