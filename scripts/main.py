@@ -194,7 +194,7 @@ class AwsEfsManager:
         glowroot_path = os.path.join(env_path, 'glowroot')
         glowroot_properties_path = os.path.join(glowroot_path, 'glowroot.properties')
         
-        create_assets_command = f"sudo mkdir {assets_path}"
+        create_assets_command = f"sudo mkdir -p {assets_path}"
         set_glowroot_command = f"sudo cp -r /mnt/glowroot {env_path}"
        
         # Create env and assets directories if they don't exist
