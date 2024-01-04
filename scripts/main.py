@@ -187,30 +187,25 @@ class AwsEfsManager:
             
     def efs_folder_setup(self, client_name, env):
         region_config = self.regions.get(self.region)
-        base_path = '/mnt'
-        client_path = os.path.join(base_path, client_name)
-        env_path = os.path.join(client_path, env)
-        assets_path = os.path.join(env_path, 'assets')
-        glowroot_path = os.path.join(env_path, 'glowroot')
-        glowroot_properties_path = os.path.join(glowroot_path, 'glowroot.properties')
+        assets_path = f'/mnt/{client_name}/{env}/assets'
+        glowroot_path = f'/mnt/{client_name}/{env}/glowroot'
         
-        create_assets_command = f"sudo mkdir -p {assets_path}"
-        set_glowroot_command = f"sudo cp -r /mnt/glowroot {env_path}"
-        content = f"agent.id=k8s.{client_name}::{env}\ncollector.address={region_config['glowroot']}\n"
-        write_command = f"echo '{content}' | sudo tee {glowroot_properties_path}"
-
-       
-        # Create env and assets directories if they don't exist
         if not os.path.exists(assets_path):
             try:
-                subprocess.run(create_assets_command, check=True, shell=True)
-                subprocess.run(set_glowroot_command, check=True, shell=True)
-                logging.info(f"'assets' directory created successfully at {assets_path}")
-                subprocess.run(write_command, check=True, shell=True)
-                logging.info(f"'glowroot.properties' updated successfully in {glowroot_properties_path}")
+                # Create assets directory and copy glowroot
+                subprocess.run(f"sudo mkdir -p {assets_path}", check=True, shell=True)
+                subprocess.run(f"sudo cp -r /mnt/glowroot {glowroot_path}", check=True, shell=True)
                 
+                # Write to glowroot.properties
+                content = f"agent.id=k8s.{client_name}::{env}\ncollector.address={region_config['glowroot']}\n"
+                subprocess.run(f"echo '{content}' | sudo tee {os.path.join(glowroot_path, 'glowroot.properties')}", check=True, shell=True)
+                
+                # Change ownership
+                subprocess.run(f"sudo chown -R dotcms:dotcms /mnt/{client_name}/{env}", check=True, shell=True)
+
+                logging.info(f"'assets' directory and 'glowroot.properties' updated successfully at /mnt/{client_name}/{env}")
             except OSError as e:
-                self.log_error(f"Error occurred while creating 'assets' directory: {e}")
+                self.log_error(f"Error during setup: {e}")
         else:
             logging.info(f"'assets' directory already exists at {assets_path}")
     
