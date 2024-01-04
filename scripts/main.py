@@ -196,6 +196,9 @@ class AwsEfsManager:
         
         create_assets_command = f"sudo mkdir -p {assets_path}"
         set_glowroot_command = f"sudo cp -r /mnt/glowroot {env_path}"
+        content = f"agent.id=k8s.{client_name}::{env}\ncollector.address={region_config['glowroot']}\n"
+        write_command = f"echo '{content}' | sudo tee {glowroot_properties_path}"
+
        
         # Create env and assets directories if they don't exist
         if not os.path.exists(assets_path):
@@ -203,10 +206,7 @@ class AwsEfsManager:
                 subprocess.run(create_assets_command, check=True, shell=True)
                 subprocess.run(set_glowroot_command, check=True, shell=True)
                 logging.info(f"'assets' directory created successfully at {assets_path}")
-                
-                with open(glowroot_properties_path, 'w') as file:
-                    file.write(f"agent.id=k8s.{client_name}::{env}\n")
-                    file.write(f"collector.address={region_config['glowroot']}\n")
+                subprocess.run(write_command, check=True, shell=True)
                 logging.info(f"'glowroot.properties' updated successfully in {glowroot_properties_path}")
                 
             except OSError as e:
