@@ -40,7 +40,7 @@ def setup_rds_for_environment(client_name, env):
     createrole = f"export PGPASSWORD={db_master_password} && psql -h {rds_endpoint} -U {db_master_user} -c \"CREATE ROLE {role_name} WITH LOGIN ENCRYPTED PASSWORD '{role_password}';\""
     grantrole = f"export PGPASSWORD={db_master_password} && psql -h {rds_endpoint} -U {db_master_user} -c \"GRANT ALL PRIVILEGES ON DATABASE {db_name} TO {role_name};\""
     alterdb = f"export PGPASSWORD={db_master_password} && psql -h {rds_endpoint} -U {db_master_user} -c \"ALTER DATABASE {db_name} OWNER TO {role_name};\" && unset PGPASSWORD"
-    checkdb = f"export PGPASSWORD={db_master_password} && psql -h {rds_endpoint} -U {db_master_user} -c \"list\" && unset PGPASSWORD"
+    checkdb = f"export PGPASSWORD={db_master_password} && psql -h {rds_endpoint} -U {db_master_user} -c \"\\l\" && unset PGPASSWORD"
     
     # Execute the command
     try:
