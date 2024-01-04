@@ -9,5 +9,6 @@ bro:
 - qa25
 caliber:
 - prod
+- qa
 dot:
 - prod
