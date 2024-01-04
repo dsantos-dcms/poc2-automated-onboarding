@@ -6,6 +6,7 @@ bro:
 - dev
 - qa
 - qa23
+- qa25
 caliber:
 - prod
 dot:
