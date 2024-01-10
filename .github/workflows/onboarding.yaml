@@ -34,16 +34,19 @@ jobs:
           echo "Customers and envrionments to be onboarded: $TO_ONBOARD"
       
       - name: Onboarding Process
+        if: env.TO_ONBOARD != '{}'
         run: |
           python3 scripts/main.py
     
       - name: Updating Onboarding Config file
+        if: env.TO_ONBOARD != '{}'
         run: |
           python3 scripts/update_config.py
           git config --global user.name 'Automated onboarding'
           git config --global user.email 'automatedonboarding@dotcms.com'
           git add -A
           git diff --staged --quiet || (git commit -m "Update config onboarding ca-central-1" && git push)
+
   North-Virginia:
     runs-on: [self-hosted, us]
     env:
@@ -66,10 +69,12 @@ jobs:
           echo "Customers and envrionments to be onboarded: $TO_ONBOARD"
       
       - name: Onboarding Process
+        if: env.TO_ONBOARD != '{}'
         run: |
           python3 scripts/main.py
     
       - name: Updating Onboarding Config file
+        if: env.TO_ONBOARD != '{}'
         run: |
           python3 scripts/update_config.py
           git config --global user.name 'Automated onboarding'
