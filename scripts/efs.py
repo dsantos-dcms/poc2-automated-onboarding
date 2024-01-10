@@ -62,7 +62,8 @@ class AwsEfsManager:
                     Encrypted=True, 
                     Tags=[
                         {'Key': 'Name', 'Value': efs_name},
-                        {'Key': 'dotcms.client.name.short', 'Value': client_name}
+                        {'Key': 'dotcms.client.name.short', 'Value': client_name},
+                        {'Key': 'aws.backup', 'Value': 'standard'}
                     ]
                 )
                 file_system_id = response['FileSystemId']

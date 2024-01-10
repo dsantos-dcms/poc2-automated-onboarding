@@ -1,5 +1,5 @@
 ---
 calvin:
   prod:
-    namespace: Jose
+    namespace: calvin
 
