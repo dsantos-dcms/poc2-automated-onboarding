@@ -69,6 +69,16 @@ class AwsEfsManager:
                 file_system_id = response['FileSystemId']
                 self.wait_for_efs_available(file_system_id)
                 logging.info(f"EFS '{efs_name}' created successfully with ID: {file_system_id}")
+                
+                # Create mount targets
+                for subnet_id in subnet_ids:   
+                    self.create_mount_target(file_system_id, subnet_id, security_groups)
+                    
+                # After creating all mount targets, wait for them to become available
+                if not self.wait_for_mount_target_availability(file_system_id):
+                    logging.warning(f"Not all mount targets for EFS {file_system_id} became available.")
+                    return None
+                  
             except ClientError as e:
                 self.log_error(e)
                 return None
@@ -77,17 +87,6 @@ class AwsEfsManager:
                 return None
         else:
             logging.info(f"EFS '{efs_name}' already exists with ID: {file_system_id}. Skipping EFS creation for '{efs_name}'")
-            logging.info(f"Starting the process to create/check mount targets for '{efs_name}'...")
-
-        # Create mount targets
-        for subnet_id in subnet_ids:
-            if not self.mount_target_exists(file_system_id, subnet_id):
-               self.create_mount_target(file_system_id, subnet_id, security_groups)
-            
-        # After creating all mount targets, wait for them to become available
-        if not self.wait_for_mount_target_availability(file_system_id):
-            logging.warning(f"Not all mount targets for EFS {file_system_id} became available.")
-            return None
 
         return file_system_id
 
@@ -170,16 +169,21 @@ class AwsEfsManager:
             return None
         
     def mount_efs(self, file_system_id, client_name):
-        base_path = '/mnt'
-        client_path = os.path.join(base_path, client_name)
-
+        client_path = f'/mnt/{client_name}'
+        
         # Check if the mount point already has a mounted file system
         if not os.path.ismount(client_path):
-            # Mount command
-            mount_command = f"sudo mkdir {client_path} && sudo mount -t efs -o tls {file_system_id}:/ {client_path}"
+            # commands
+            mkdir_command = f"sudo mkdir {client_path}"
+            mount_command = f"sudo mount -t efs -o tls {file_system_id}:/ {client_path}"
             try:
                 # Execute mount command
+                logging.info(f"Creating client dir: {client_path}")
+                subprocess.run(mkdir_command, check=True, shell=True)
+                
+                logging.info(f"Mounting efs {file_system_id} to dir {client_path}")
                 subprocess.run(mount_command, check=True, shell=True)
+                
                 logging.info(f"EFS {file_system_id} mounted successfully at {client_path}")
             except subprocess.CalledProcessError as e:
                 self.log_error(f"Error occurred while mounting EFS: {e}")
