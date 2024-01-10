@@ -3,3 +3,5 @@ caliber:
 equifax:
 - prod
 - dev
+equit:
+- prod
