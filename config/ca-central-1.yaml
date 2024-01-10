@@ -6,3 +6,4 @@ equifax:
 equit:
 - prod
 - dev
+- qa
