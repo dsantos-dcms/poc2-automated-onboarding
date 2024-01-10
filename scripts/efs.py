@@ -198,9 +198,11 @@ class AwsEfsManager:
         if not os.path.exists(assets_path):
             try:
                 # Create assets directory and copy glowroot
-                logging.info(f"Creating directories")
+                logging.info(f"Creating directories for {env}")
                 subprocess.run(f"sudo mkdir -p {assets_path}", check=True, shell=True)
-                logging.info(f"Copying glowroot folder and updating glowroot.properties")
+                logging.info(f"Directories {assets_path} sucesfully created")
+                
+                logging.info(f"Copying glowroot to {glowroot_path} and updating glowroot.properties")
                 subprocess.run(f"sudo cp -r /mnt/glowroot {glowroot_path}", check=True, shell=True)
             
                 # Write to glowroot.properties
@@ -211,7 +213,10 @@ class AwsEfsManager:
                 # Change ownership
                 subprocess.run(f"sudo chown -R dotcms:dotcms /mnt/{client_name}/{env}", check=True, shell=True)
 
-                logging.info(f"'assets' directory and 'glowroot.properties' configured successfully at /mnt/{client_name}/{env}")
+                logging.info(f"Permissions configured:")
+                subprocess.run(f"ls -lha /mnt/{client_name}/{env}", check=True, shell=True)
+                
+                
             except OSError as e:
                 self.log_error(f"Error during setup: {e}")
         else:
